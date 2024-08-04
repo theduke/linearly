@@ -30,6 +30,7 @@ pub enum IssueTableColumns {
     State,
     Created,
     Updated,
+    AssigneeDisplayName,
 }
 
 impl Render for linear_api::schema::issue_list::Issue {
@@ -40,6 +41,7 @@ impl Render for linear_api::schema::issue_list::Issue {
             IssueTableColumns::Key,
             IssueTableColumns::Title,
             IssueTableColumns::State,
+            IssueTableColumns::AssigneeDisplayName,
             IssueTableColumns::Created,
             IssueTableColumns::Updated,
         ]
@@ -53,6 +55,7 @@ impl Render for linear_api::schema::issue_list::Issue {
                 IssueTableColumns::Title => Cell::new("Title"),
                 IssueTableColumns::Description => Cell::new("Description"),
                 IssueTableColumns::State => Cell::new("State"),
+                IssueTableColumns::AssigneeDisplayName => Cell::new("Assignee"),
                 IssueTableColumns::Created => Cell::new("Created"),
                 IssueTableColumns::Updated => Cell::new("Updated"),
             })
@@ -71,6 +74,12 @@ impl Render for linear_api::schema::issue_list::Issue {
                     Cell::new(item.description.as_deref().unwrap_or_default())
                 }
                 IssueTableColumns::State => Cell::new(&item.state.name),
+                IssueTableColumns::AssigneeDisplayName => Cell::new(
+                    item.assignee
+                        .as_ref()
+                        .map(|x| x.display_name.as_str())
+                        .unwrap_or_default(),
+                ),
                 IssueTableColumns::Created => {
                     let v = item
                         .created_at

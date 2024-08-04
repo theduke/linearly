@@ -126,7 +126,7 @@ pub mod projects_list {
 }
 
 pub mod issue_list {
-    use super::{schema, DateTime, PaginationOrderBy};
+    use super::{schema, DateTime, PaginationOrderBy, User};
 
     #[derive(cynic::QueryVariables, Debug)]
     pub struct IssueListVariables {
@@ -162,6 +162,7 @@ pub mod issue_list {
         pub description: Option<String>,
         pub branch_name: String,
         pub canceled_at: Option<DateTime>,
+        pub assignee: Option<User>,
         pub completed_at: Option<DateTime>,
         pub created_at: DateTime,
         pub due_date: Option<TimelessDate>,
