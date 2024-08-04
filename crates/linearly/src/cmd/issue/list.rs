@@ -99,7 +99,7 @@ impl CliCommand for CmdIssueList {
 
         let output = match self.format {
             Format::Table => {
-                let columns = Issue::default_list_table_columns();
+                let columns = Issue::default_list_fields();
                 Issue::render_list_table(&res.issues.nodes, &columns)
             }
             Format::Json => serde_json::to_string_pretty(&res.issues.nodes)?,

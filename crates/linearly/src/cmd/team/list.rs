@@ -47,7 +47,7 @@ impl CliCommand for CmdTeamList {
 
         let output = match self.format {
             Format::Table => {
-                let columns = Team::default_list_table_columns();
+                let columns = Team::default_list_table_fields();
                 Team::render_list_table(&res.teams.nodes, &columns)
             }
             Format::Json => serde_json::to_string_pretty(&res.teams.nodes)?,

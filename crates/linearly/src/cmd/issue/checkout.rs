@@ -29,6 +29,7 @@ pub struct CmdIssueCheckout {
     #[clap(long)]
     pub repo: Option<PathBuf>,
 
+    /// Issue ID (eg: MYTEAM-123)
     pub issue_id: String,
 }
 

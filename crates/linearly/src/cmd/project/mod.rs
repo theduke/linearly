@@ -32,9 +32,9 @@ pub enum ProjectTableColumns {
 }
 
 impl Render for linear_api::schema::projects_list::Project {
-    type TableColumns = ProjectTableColumns;
+    type Fields = ProjectTableColumns;
 
-    fn default_list_table_columns() -> Vec<Self::TableColumns> {
+    fn default_list_fields() -> Vec<Self::Fields> {
         vec![
             ProjectTableColumns::Name,
             ProjectTableColumns::Description,
@@ -44,48 +44,46 @@ impl Render for linear_api::schema::projects_list::Project {
         ]
     }
 
-    fn list_table_header(columns: &[Self::TableColumns]) -> Vec<Cell> {
-        columns
-            .iter()
-            .map(|c| match c {
-                ProjectTableColumns::Name => Cell::new("Name").add_attribute(Attribute::Bold),
-                ProjectTableColumns::Description => Cell::new("Description"),
-                ProjectTableColumns::Status => Cell::new("Status"),
-                ProjectTableColumns::Created => Cell::new("Created"),
-                ProjectTableColumns::Updated => Cell::new("Updated"),
-            })
-            .collect()
+    fn default_detail_fields() -> Vec<Self::Fields> {
+        Self::default_list_fields()
     }
 
-    fn list_table_row(item: &Self, columns: &[Self::TableColumns]) -> Vec<Cell> {
+    fn render_field_header(field: &Self::Fields) -> Cell {
+        match field {
+            ProjectTableColumns::Name => Cell::new("Name").add_attribute(Attribute::Bold),
+            ProjectTableColumns::Description => Cell::new("Description"),
+            ProjectTableColumns::Status => Cell::new("Status"),
+            ProjectTableColumns::Created => Cell::new("Created"),
+            ProjectTableColumns::Updated => Cell::new("Updated"),
+        }
+    }
+
+    fn render_field(item: &Self, field: Self::Fields) -> Cell {
         let timeformat = time::format_description::parse("[year]-[month]-[day]").unwrap();
 
-        columns
-            .iter()
-            .map(|col| match col {
-                ProjectTableColumns::Name => Cell::new(&item.name),
-                ProjectTableColumns::Description => Cell::new(&item.description),
-                ProjectTableColumns::Status => Cell::new(&item.status.name),
-                ProjectTableColumns::Created => {
-                    let v = item
-                        .created_at
-                        .parse()
-                        .unwrap()
-                        .format(&timeformat)
-                        .unwrap();
-                    Cell::new(v)
-                }
+        match field {
+            ProjectTableColumns::Name => Cell::new(&item.name),
+            ProjectTableColumns::Description => Cell::new(&item.description),
+            ProjectTableColumns::Status => Cell::new(&item.status.name),
+            ProjectTableColumns::Created => {
+                let v = item
+                    .created_at
+                    .parse()
+                    .unwrap()
+                    .format(&timeformat)
+                    .unwrap();
+                Cell::new(v)
+            }
 
-                ProjectTableColumns::Updated => {
-                    let v = item
-                        .updated_at
-                        .parse()
-                        .unwrap()
-                        .format(&timeformat)
-                        .unwrap();
-                    Cell::new(v)
-                }
-            })
-            .collect()
+            ProjectTableColumns::Updated => {
+                let v = item
+                    .updated_at
+                    .parse()
+                    .unwrap()
+                    .format(&timeformat)
+                    .unwrap();
+                Cell::new(v)
+            }
+        }
     }
 }

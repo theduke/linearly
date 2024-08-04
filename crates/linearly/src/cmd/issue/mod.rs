@@ -1,16 +1,18 @@
+pub mod checkout;
+pub mod list;
+pub mod view;
+
 use comfy_table::{Attribute, Cell};
 
 use crate::render::Render;
 
 use super::CliCommand;
 
-pub mod checkout;
-pub mod list;
-
 #[derive(clap::Subcommand)]
 pub enum CmdIssue {
     #[clap(alias = "ls")]
     List(list::CmdIssueList),
+    View(view::CmdIssueView),
     #[clap(alias = "co")]
     Checkout(checkout::CmdIssueCheckout),
 }
@@ -21,6 +23,7 @@ impl CliCommand for CmdIssue {
     async fn run(self) -> Result<(), anyhow::Error> {
         match self {
             CmdIssue::List(c) => c.run().await,
+            CmdIssue::View(c) => c.run().await,
             CmdIssue::Checkout(c) => c.run().await,
         }
     }
@@ -39,9 +42,9 @@ pub enum IssueTableColumns {
 }
 
 impl Render for linear_api::schema::issue_list::Issue {
-    type TableColumns = IssueTableColumns;
+    type Fields = IssueTableColumns;
 
-    fn default_list_table_columns() -> Vec<Self::TableColumns> {
+    fn default_list_fields() -> Vec<Self::Fields> {
         vec![
             IssueTableColumns::Key,
             IssueTableColumns::Title,
@@ -52,59 +55,64 @@ impl Render for linear_api::schema::issue_list::Issue {
         ]
     }
 
-    fn list_table_header(columns: &[Self::TableColumns]) -> Vec<Cell> {
-        columns
-            .iter()
-            .map(|c| match c {
-                IssueTableColumns::Key => Cell::new("Key").add_attribute(Attribute::Bold),
-                IssueTableColumns::Title => Cell::new("Title"),
-                IssueTableColumns::Description => Cell::new("Description"),
-                IssueTableColumns::State => Cell::new("State"),
-                IssueTableColumns::AssigneeDisplayName => Cell::new("Assignee"),
-                IssueTableColumns::Created => Cell::new("Created"),
-                IssueTableColumns::Updated => Cell::new("Updated"),
-            })
-            .collect()
+    fn default_detail_fields() -> Vec<Self::Fields> {
+        vec![
+            IssueTableColumns::Key,
+            IssueTableColumns::Title,
+            IssueTableColumns::State,
+            IssueTableColumns::AssigneeDisplayName,
+            IssueTableColumns::Description,
+            IssueTableColumns::Created,
+            IssueTableColumns::Updated,
+        ]
     }
 
-    fn list_table_row(item: &Self, columns: &[Self::TableColumns]) -> Vec<Cell> {
+    fn render_field_header(field: &Self::Fields) -> Cell {
+        match field {
+            IssueTableColumns::Key => Cell::new("Key").add_attribute(Attribute::Bold),
+            IssueTableColumns::Title => Cell::new("Title"),
+            IssueTableColumns::Description => Cell::new("Description"),
+            IssueTableColumns::State => Cell::new("State"),
+            IssueTableColumns::AssigneeDisplayName => Cell::new("Assignee"),
+            IssueTableColumns::Created => Cell::new("Created"),
+            IssueTableColumns::Updated => Cell::new("Updated"),
+        }
+    }
+
+    fn render_field(item: &Self, field: Self::Fields) -> Cell {
         let timeformat = time::format_description::parse("[year]-[month]-[day]").unwrap();
+        match field {
+            IssueTableColumns::Key => Cell::new(&item.identifier),
+            IssueTableColumns::Title => Cell::new(&item.title),
+            IssueTableColumns::Description => {
+                Cell::new(item.description.as_deref().unwrap_or_default())
+            }
+            IssueTableColumns::State => Cell::new(&item.state.name),
+            IssueTableColumns::AssigneeDisplayName => Cell::new(
+                item.assignee
+                    .as_ref()
+                    .map(|x| x.display_name.as_str())
+                    .unwrap_or_default(),
+            ),
+            IssueTableColumns::Created => {
+                let v = item
+                    .created_at
+                    .parse()
+                    .unwrap()
+                    .format(&timeformat)
+                    .unwrap();
+                Cell::new(v)
+            }
 
-        columns
-            .iter()
-            .map(|col| match col {
-                IssueTableColumns::Key => Cell::new(&item.identifier),
-                IssueTableColumns::Title => Cell::new(&item.title),
-                IssueTableColumns::Description => {
-                    Cell::new(item.description.as_deref().unwrap_or_default())
-                }
-                IssueTableColumns::State => Cell::new(&item.state.name),
-                IssueTableColumns::AssigneeDisplayName => Cell::new(
-                    item.assignee
-                        .as_ref()
-                        .map(|x| x.display_name.as_str())
-                        .unwrap_or_default(),
-                ),
-                IssueTableColumns::Created => {
-                    let v = item
-                        .created_at
-                        .parse()
-                        .unwrap()
-                        .format(&timeformat)
-                        .unwrap();
-                    Cell::new(v)
-                }
-
-                IssueTableColumns::Updated => {
-                    let v = item
-                        .updated_at
-                        .parse()
-                        .unwrap()
-                        .format(&timeformat)
-                        .unwrap();
-                    Cell::new(v)
-                }
-            })
-            .collect()
+            IssueTableColumns::Updated => {
+                let v = item
+                    .updated_at
+                    .parse()
+                    .unwrap()
+                    .format(&timeformat)
+                    .unwrap();
+                Cell::new(v)
+            }
+        }
     }
 }
