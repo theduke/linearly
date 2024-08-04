@@ -30,7 +30,7 @@ pub enum Cmd {
     Project(project::CmdProject),
     #[clap(subcommand)]
     Team(team::CmdTeam),
-    #[clap(subcommand)]
+    #[clap(subcommand, alias = "i")]
     Issue(issue::CmdIssue),
 
     Login(login::CmdLogin),

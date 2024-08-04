@@ -39,3 +39,8 @@ cargo install --locked --git https://github.com/theduke/linearly
   ```bash
   linear login
   ```
+* Use the CLI:
+  - `linear issue list [--team MYTEAM] [--assigne USERNAME]`
+  - `linear team list`
+  - `linear issue list`
+  - ...

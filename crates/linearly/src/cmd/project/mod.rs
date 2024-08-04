@@ -8,6 +8,7 @@ pub mod list;
 
 #[derive(clap::Subcommand)]
 pub enum CmdProject {
+    #[clap(alias = "ls")]
     List(list::CmdProjectList),
 }
 
