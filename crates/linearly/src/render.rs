@@ -13,14 +13,14 @@ pub trait Render: Sized {
 
     fn render_list_table_header(fields: &[Self::Fields]) -> Vec<Cell> {
         fields
-            .into_iter()
+            .iter()
             .map(|c| Self::render_field_header(c))
             .collect()
     }
 
     fn render_list_table_row(item: &Self, fields: &[Self::Fields]) -> Vec<Cell> {
         fields
-            .into_iter()
+            .iter()
             .map(|c| Self::render_field(item, *c))
             .collect()
     }
@@ -52,7 +52,7 @@ pub trait Render: Sized {
             .load_preset(comfy_table::presets::UTF8_HORIZONTAL_ONLY);
 
         let rows: Vec<Vec<Cell>> = fields
-            .into_iter()
+            .iter()
             .map(|field| {
                 let header = Self::render_field_header(field);
                 let value = Self::render_field(item, *field);
