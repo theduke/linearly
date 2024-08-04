@@ -40,7 +40,8 @@ cargo install --locked --git https://github.com/theduke/linearly
   linear login
   ```
 * Use the CLI:
-  - `linear issue list [--team MYTEAM] [--assigne USERNAME]`
   - `linear team list`
-  - `linear issue list`
-  - ...
+  - `linear project list`
+  - `linear issue list [--team MYTEAM] [--assigne <USERNAME|me>] [--author <USERNAME|me>]`
+    Note: you can use the special `me` filter for --assigne and --author,
+          which will resolve to your current username.

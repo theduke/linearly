@@ -48,10 +48,20 @@ impl CliCommand for CmdIssueList {
             let mut filters = Vec::<IssueFilter>::new();
 
             if let Some(name) = self.assignee {
-                filters.push(IssueFilter::assignee_username(name));
+                let filter = if name == "me" {
+                    IssueFilter::assignee_me()
+                } else {
+                    IssueFilter::assignee_username(name)
+                };
+                filters.push(filter);
             }
             if let Some(name) = self.author {
-                filters.push(IssueFilter::creator_username(name));
+                let filter = if name == "me" {
+                    IssueFilter::assignee_me()
+                } else {
+                    IssueFilter::assignee_username(name)
+                };
+                filters.push(filter);
             }
             if let Some(team) = self.team {
                 filters.push(IssueFilter::team_key(team));
