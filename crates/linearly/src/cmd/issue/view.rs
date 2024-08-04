@@ -1,3 +1,5 @@
+use std::process::Stdio;
+
 use anyhow::Context;
 use cynic::QueryBuilder;
 
@@ -23,6 +25,10 @@ pub struct CmdIssueView {
 
     #[clap(long, short, default_value = "table")]
     pub format: Format,
+
+    /// Open the issue in the browser.
+    #[clap(long, short)]
+    pub web: bool,
 
     /// Issue ID (eg: MYTEAM-123)
     pub issue_id: String,
@@ -50,6 +56,14 @@ impl CliCommand for CmdIssueView {
         let fields = Issue::default_detail_fields();
         let out = Issue::render_detail_table(&issue, &fields);
         println!("{}", out);
+
+        if self.web {
+            eprintln!("Opening URL {} in the browser...", issue.url);
+            open::commands(&issue.url)[0]
+                .stdout(Stdio::null())
+                .stderr(Stdio::null())
+                .spawn()?;
+        }
 
         Ok(())
     }
