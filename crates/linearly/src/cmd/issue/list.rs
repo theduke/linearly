@@ -20,10 +20,14 @@ pub struct CmdIssueList {
     pub limit: i32,
 
     /// Name of the assigned user.
+    ///
+    /// Use "me" as an alias for yourself.
     #[clap(long)]
     pub assignee: Option<String>,
 
     /// Name of the creator.
+    ///
+    /// Use "me" as an alias for yourself.
     #[clap(long)]
     pub author: Option<String>,
 
