@@ -13,6 +13,10 @@ CLI client and TUI (terminal user interface) for [Linear](https://linear.app).
     - [x] list
     - [ ] view
     - [ ] create
+    - [ ] checkout
+          Partial: implemented, but should allow interactive searching and
+            checking existing linked PR that doesn't match the Linear-generated
+            branch name.
   - [ ] project
     - [x] list
     - [ ] view
@@ -45,3 +49,6 @@ cargo install --locked --git https://github.com/theduke/linearly
   - `linear issue list [--team MYTEAM] [--assigne <USERNAME|me>] [--author <USERNAME|me>]`
     Note: you can use the special `me` filter for --assigne and --author,
           which will resolve to your current username.
+  - `linear issue checkout MYTEAM-123`
+    Create or check out a Git branch for a given issue.
+    Uses the Linear-generated branch name.

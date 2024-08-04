@@ -4,12 +4,15 @@ use crate::render::Render;
 
 use super::CliCommand;
 
+pub mod checkout;
 pub mod list;
 
 #[derive(clap::Subcommand)]
 pub enum CmdIssue {
     #[clap(alias = "ls")]
     List(list::CmdIssueList),
+    #[clap(alias = "co")]
+    Checkout(checkout::CmdIssueCheckout),
 }
 
 impl CliCommand for CmdIssue {
@@ -18,6 +21,7 @@ impl CliCommand for CmdIssue {
     async fn run(self) -> Result<(), anyhow::Error> {
         match self {
             CmdIssue::List(c) => c.run().await,
+            CmdIssue::Checkout(c) => c.run().await,
         }
     }
 }

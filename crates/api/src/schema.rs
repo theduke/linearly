@@ -1805,3 +1805,19 @@ pub mod issue_list {
     #[derive(cynic::Scalar, Debug, Clone)]
     pub struct TimelessDateOrDuration(pub String);
 }
+
+pub mod issue_get {
+    use super::schema;
+
+    #[derive(cynic::QueryVariables, Debug)]
+    pub struct IssueGetVariables {
+        pub id: String,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "Query", variables = "IssueGetVariables")]
+    pub struct IssueGet {
+        #[arguments(id: $id)]
+        pub issue: super::issue_list::Issue,
+    }
+}
