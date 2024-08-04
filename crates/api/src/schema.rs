@@ -382,6 +382,13 @@ pub mod issue_list {
             }
         }
 
+        pub fn creator_me() -> Self {
+            Self {
+                creator: Some(NullableUserFilter::me()),
+                ..Default::default()
+            }
+        }
+
         pub fn assignee_username(name: String) -> Self {
             Self {
                 assignee: Some(NullableUserFilter::username(name)),
@@ -466,53 +473,95 @@ pub mod issue_list {
 
     #[derive(cynic::InputObject, Debug)]
     pub struct IssueCollectionFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub number: Option<NumberComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub title: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub description: Option<NullableStringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub priority: Option<NullableNumberComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub estimate: Option<EstimateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub started_at: Option<NullableDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub triaged_at: Option<NullableDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub completed_at: Option<NullableDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub canceled_at: Option<NullableDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub auto_closed_at: Option<NullableDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub auto_archived_at: Option<NullableDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub due_date: Option<NullableTimelessDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub snoozed_until_at: Option<NullableDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub assignee: Option<Box<NullableUserFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub last_applied_template: Option<NullableTemplateFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub source_metadata: Option<SourceMetadataComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub creator: Option<Box<NullableUserFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub parent: Option<NullableIssueFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub snoozed_by: Option<Box<NullableUserFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub labels: Option<IssueLabelCollectionFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub subscribers: Option<UserCollectionFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub team: Option<TeamFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub project_milestone: Option<NullableProjectMilestoneFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub comments: Option<CommentCollectionFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub cycle: Option<NullableCycleFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub project: Option<NullableProjectFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub state: Option<WorkflowStateFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub children: Option<Box<IssueCollectionFilter>>,
-        pub attachments: Option<AttachmentCollectionFilter>,
+        // #[cynic(skip_serializing_if = "Option::is_none")]
+        // pub attachments: Option<AttachmentCollectionFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub searchable_content: Option<ContentComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub has_related_relations: Option<RelationExistsComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub has_duplicate_relations: Option<RelationExistsComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub has_blocked_by_relations: Option<RelationExistsComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub has_blocking_relations: Option<RelationExistsComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub sla_status: Option<SlaStatusComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub reactions: Option<ReactionCollectionFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub needs: Option<CustomerNeedCollectionFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub some: Option<Box<IssueFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub every: Option<Box<IssueFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub length: Option<NumberComparator>,
-
         // NOTE: commented out because it causes cynic to overflow the stack.
-        pub and: Option<Vec<IssueCollectionFilter>>,
-        pub or: Option<Vec<IssueCollectionFilter>>,
+        // pub and: Option<Vec<IssueCollectionFilter>>,
+        // pub or: Option<Vec<IssueCollectionFilter>>,
     }
 
     #[derive(cynic::InputObject, Debug)]
@@ -579,8 +628,8 @@ pub mod issue_list {
         pub state: Option<WorkflowStateFilter>,
         #[cynic(skip_serializing_if = "Option::is_none")]
         pub children: Option<Box<IssueCollectionFilter>>,
-        #[cynic(skip_serializing_if = "Option::is_none")]
-        pub attachments: Option<AttachmentCollectionFilter>,
+        // #[cynic(skip_serializing_if = "Option::is_none")]
+        // pub attachments: Option<AttachmentCollectionFilter>,
         #[cynic(skip_serializing_if = "Option::is_none")]
         pub searchable_content: Option<ContentComparator>,
         #[cynic(skip_serializing_if = "Option::is_none")]
@@ -1236,186 +1285,307 @@ pub mod issue_list {
 
     #[derive(cynic::InputObject, Debug)]
     pub struct ProjectMilestoneCollectionFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub target_date: Option<NullableDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<ProjectMilestoneCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<ProjectMilestoneCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub some: Option<ProjectMilestoneFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub every: Option<ProjectMilestoneFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub length: Option<NumberComparator>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct ProjectMilestoneFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub target_date: Option<NullableDateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<ProjectMilestoneFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<ProjectMilestoneFilter>>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct InitiativeCollectionFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub slug_id: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub status: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub creator: Option<UserFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<InitiativeCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<InitiativeCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub some: Option<InitiativeFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub every: Option<InitiativeFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub length: Option<NumberComparator>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct InitiativeFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub slug_id: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub status: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub creator: Option<UserFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<InitiativeFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<InitiativeFilter>>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct RoadmapCollectionFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub slug_id: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub creator: Option<UserFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<RoadmapCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<RoadmapCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub some: Option<RoadmapFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub every: Option<RoadmapFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub length: Option<NumberComparator>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct RoadmapFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub slug_id: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub creator: Option<UserFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<RoadmapFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<RoadmapFilter>>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct UserCollectionFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub display_name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub email: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub active: Option<BooleanComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub assigned_issues: Option<Box<IssueCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub admin: Option<BooleanComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub is_me: Option<BooleanComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<UserCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<UserCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub some: Option<UserFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub every: Option<UserFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub length: Option<NumberComparator>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct ProjectUpdatesCollectionFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub health: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<ProjectUpdatesCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<ProjectUpdatesCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub some: Option<ProjectUpdatesFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub every: Option<ProjectUpdatesFilter>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub length: Option<NumberComparator>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct ProjectUpdatesFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub health: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<ProjectUpdatesFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<ProjectUpdatesFilter>>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct RelationExistsComparator {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub eq: Option<bool>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub neq: Option<bool>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct NullableDateComparator {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub eq: Option<DateTimeOrDuration>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub neq: Option<DateTimeOrDuration>,
-        #[cynic(rename = "in")]
+        #[cynic(rename = "in", skip_serializing_if = "Option::is_none")]
         pub in_: Option<Vec<DateTimeOrDuration>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub nin: Option<Vec<DateTimeOrDuration>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub null: Option<bool>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub lt: Option<DateTimeOrDuration>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub lte: Option<DateTimeOrDuration>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub gt: Option<DateTimeOrDuration>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub gte: Option<DateTimeOrDuration>,
     }
 
     #[derive(cynic::InputObject, Debug, Default)]
     pub struct ContentComparator {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub contains: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub not_contains: Option<String>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct NullableNumberComparator {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub eq: Option<f64>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub neq: Option<f64>,
-        #[cynic(rename = "in")]
+        #[cynic(rename = "in", skip_serializing_if = "Option::is_none")]
         pub in_: Option<Vec<f64>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub nin: Option<Vec<f64>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub null: Option<bool>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub lt: Option<f64>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub lte: Option<f64>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub gt: Option<f64>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub gte: Option<f64>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct UserFilter {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub id: Option<Idcomparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub created_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub updated_at: Option<DateComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub display_name: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub email: Option<StringComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub active: Option<BooleanComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub assigned_issues: Option<Box<IssueCollectionFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub admin: Option<BooleanComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub is_me: Option<BooleanComparator>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub and: Option<Vec<UserFilter>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub or: Option<Vec<UserFilter>>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct BooleanComparator {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub eq: Option<bool>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub neq: Option<bool>,
     }
 
@@ -1435,88 +1605,110 @@ pub mod issue_list {
         }
     }
 
-    #[derive(cynic::InputObject, Debug)]
-    pub struct AttachmentCollectionFilter {
-        pub id: Option<Idcomparator>,
-        pub created_at: Option<DateComparator>,
-        pub updated_at: Option<DateComparator>,
-        pub title: Option<StringComparator>,
-        pub subtitle: Option<NullableStringComparator>,
-        pub url: Option<StringComparator>,
-        pub creator: Option<Box<NullableUserFilter>>,
-        pub source_type: Option<SourceTypeComparator>,
-        pub and: Option<Vec<AttachmentCollectionFilter>>,
-        pub or: Option<Vec<AttachmentCollectionFilter>>,
-        pub some: Option<AttachmentFilter>,
-        pub every: Option<AttachmentFilter>,
-        pub length: Option<NumberComparator>,
-    }
+    // #[derive(cynic::InputObject, Debug)]
+    // pub struct AttachmentCollectionFilter {
+    //     pub id: Option<Idcomparator>,
+    //     pub created_at: Option<DateComparator>,
+    //     pub updated_at: Option<DateComparator>,
+    //     pub title: Option<StringComparator>,
+    //     pub subtitle: Option<NullableStringComparator>,
+    //     pub url: Option<StringComparator>,
+    //     pub creator: Option<Box<NullableUserFilter>>,
+    //     pub source_type: Option<SourceTypeComparator>,
+    //     pub and: Option<Vec<AttachmentCollectionFilter>>,
+    //     pub or: Option<Vec<AttachmentCollectionFilter>>,
+    //     pub some: Option<AttachmentFilter>,
+    //     pub every: Option<AttachmentFilter>,
+    //     pub length: Option<NumberComparator>,
+    // }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct NumberComparator {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub eq: Option<f64>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub neq: Option<f64>,
-        #[cynic(rename = "in")]
+        #[cynic(rename = "in", skip_serializing_if = "Option::is_none")]
         pub in_: Option<Vec<f64>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub nin: Option<Vec<f64>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub lt: Option<f64>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub lte: Option<f64>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub gt: Option<f64>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub gte: Option<f64>,
     }
 
-    #[derive(cynic::InputObject, Debug)]
-    pub struct AttachmentFilter {
-        pub id: Option<Idcomparator>,
-        pub created_at: Option<DateComparator>,
-        pub updated_at: Option<DateComparator>,
-        pub title: Option<StringComparator>,
-        pub subtitle: Option<NullableStringComparator>,
-        pub url: Option<StringComparator>,
-        pub creator: Option<Box<NullableUserFilter>>,
-        pub source_type: Option<SourceTypeComparator>,
-        pub and: Option<Vec<AttachmentFilter>>,
-        pub or: Option<Vec<AttachmentFilter>>,
-    }
+    // #[derive(cynic::InputObject, Debug)]
+    // pub struct AttachmentFilter {
+    //     pub id: Option<Idcomparator>,
+    //     pub created_at: Option<DateComparator>,
+    //     pub updated_at: Option<DateComparator>,
+    //     pub title: Option<StringComparator>,
+    //     pub subtitle: Option<NullableStringComparator>,
+    //     pub url: Option<StringComparator>,
+    //     pub creator: Option<Box<NullableUserFilter>>,
+    //     pub source_type: Option<SourceTypeComparator>,
+    //     pub and: Option<Vec<AttachmentFilter>>,
+    //     pub or: Option<Vec<AttachmentFilter>>,
+    // }
 
-    #[derive(cynic::InputObject, Debug)]
-    pub struct SourceTypeComparator {
-        pub eq: Option<String>,
-        pub neq: Option<String>,
-        #[cynic(rename = "in")]
-        pub in_: Option<Vec<String>>,
-        pub nin: Option<Vec<String>>,
-        pub eq_ignore_case: Option<String>,
-        pub neq_ignore_case: Option<String>,
-        pub starts_with: Option<String>,
-        pub starts_with_ignore_case: Option<String>,
-        pub not_starts_with: Option<String>,
-        pub ends_with: Option<String>,
-        pub not_ends_with: Option<String>,
-        pub contains: Option<String>,
-        pub contains_ignore_case: Option<String>,
-        pub not_contains: Option<String>,
-        pub not_contains_ignore_case: Option<String>,
-    }
+    // #[derive(cynic::InputObject, Debug)]
+    // pub struct SourceTypeComparator {
+    //     pub eq: Option<String>,
+    //     pub neq: Option<String>,
+    //     #[cynic(rename = "in")]
+    //     pub in_: Option<Vec<String>>,
+    //     pub nin: Option<Vec<String>>,
+    //     pub eq_ignore_case: Option<String>,
+    //     pub neq_ignore_case: Option<String>,
+    //     pub starts_with: Option<String>,
+    //     pub starts_with_ignore_case: Option<String>,
+    //     pub not_starts_with: Option<String>,
+    //     pub ends_with: Option<String>,
+    //     pub not_ends_with: Option<String>,
+    //     pub contains: Option<String>,
+    //     pub contains_ignore_case: Option<String>,
+    //     pub not_contains: Option<String>,
+    //     pub not_contains_ignore_case: Option<String>,
+    // }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct NullableStringComparator {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub eq: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub neq: Option<String>,
-        #[cynic(rename = "in")]
+        #[cynic(rename = "in", skip_serializing_if = "Option::is_none")]
         pub in_: Option<Vec<String>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub nin: Option<Vec<String>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub null: Option<bool>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub eq_ignore_case: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub neq_ignore_case: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub starts_with: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub starts_with_ignore_case: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub not_starts_with: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub ends_with: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub not_ends_with: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub contains: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub contains_ignore_case: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub not_contains: Option<String>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub not_contains_ignore_case: Option<String>,
     }
 
@@ -1565,30 +1757,42 @@ pub mod issue_list {
 
     #[derive(cynic::InputObject, Debug)]
     pub struct DateComparator {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub eq: Option<DateTimeOrDuration>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub neq: Option<DateTimeOrDuration>,
-        #[cynic(rename = "in")]
+        #[cynic(rename = "in", skip_serializing_if = "Option::is_none")]
         pub in_: Option<Vec<DateTimeOrDuration>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub nin: Option<Vec<DateTimeOrDuration>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub lt: Option<DateTimeOrDuration>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub lte: Option<DateTimeOrDuration>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub gt: Option<DateTimeOrDuration>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub gte: Option<DateTimeOrDuration>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     #[cynic(graphql_type = "IDComparator")]
     pub struct Idcomparator {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub eq: Option<cynic::Id>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub neq: Option<cynic::Id>,
-        #[cynic(rename = "in")]
+        #[cynic(rename = "in", skip_serializing_if = "Option::is_none")]
         pub in_: Option<Vec<cynic::Id>>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub nin: Option<Vec<cynic::Id>>,
     }
 
     #[derive(cynic::InputObject, Debug)]
     pub struct AssigneeSort {
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub nulls: Option<PaginationNulls>,
+        #[cynic(skip_serializing_if = "Option::is_none")]
         pub order: Option<PaginationSortOrder>,
     }
 
