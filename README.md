@@ -2,12 +2,28 @@
 
 CLI client and TUI (terminal user interface) for [Linear](https://linear.app).
 
-**NOTE**: This project is in early development, many features are missing.
-          Contributions welcome!
+> [!WARNING]  
+> This project is in very early development. Only a very basic set of features works at the moment.
+> Contributions welcome!
+
+## Features
+
+- [ ] CLI
+  - [ ] issue
+    - [x] list
+    - [ ] view
+    - [ ] create
+  - [ ] project
+    - [x] list
+    - [ ] view
+  - [ ] team
+    - [x] list
+    - [ ] view
+- [ ] TUI
 
 ## Installation
 
-### cargo
+### Install with cargo
 
 If you have Rust installed, just run:
 
