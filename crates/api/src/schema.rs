@@ -448,7 +448,7 @@ pub mod issue_list {
     impl NullableUserFilter {
         pub fn username(name: String) -> Self {
             Self {
-                name: Some(StringComparator {
+                display_name: Some(StringComparator {
                     eq: Some(name),
                     ..Default::default()
                 }),
