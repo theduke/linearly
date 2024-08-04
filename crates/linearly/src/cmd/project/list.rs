@@ -48,7 +48,7 @@ impl CliCommand for CmdProjectList {
 
         let output = match self.format {
             Format::Table => {
-                let columns = Project::default_list_table_fields();
+                let columns = Project::default_list_fields();
                 Project::render_list_table(&res.projects.nodes, &columns)
             }
             Format::Json => serde_json::to_string_pretty(&res.projects.nodes)?,
