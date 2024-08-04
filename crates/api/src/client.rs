@@ -35,8 +35,6 @@ impl Client {
         Vars: serde::Serialize + std::fmt::Debug,
         ResponseData: serde::de::DeserializeOwned + 'static,
     {
-        eprintln!("{}", serde_json::to_string_pretty(&operation).unwrap());
-
         let response = self
             .client
             .post(self.endpoint.clone())

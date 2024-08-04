@@ -404,6 +404,16 @@ pub mod issue_list {
                 ..Default::default()
             }
         }
+
+        pub fn search(term: String) -> Self {
+            Self {
+                searchable_content: Some(ContentComparator {
+                    contains: Some(term),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }
+        }
     }
 
     #[derive(cynic::InputObject, Debug, Default)]
@@ -1366,7 +1376,7 @@ pub mod issue_list {
         pub gte: Option<DateTimeOrDuration>,
     }
 
-    #[derive(cynic::InputObject, Debug)]
+    #[derive(cynic::InputObject, Debug, Default)]
     pub struct ContentComparator {
         pub contains: Option<String>,
         pub not_contains: Option<String>,

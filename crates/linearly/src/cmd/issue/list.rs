@@ -29,8 +29,12 @@ pub struct CmdIssueList {
 
     /// Filter by team.
     /// Expects the short team KEY.
-    #[clap(long)]
+    #[clap(long, short)]
     pub team: Option<String>,
+
+    /// Search for the given string.
+    #[clap(long, short)]
+    pub search: Option<String>,
 
     #[clap(long, short, default_value = "table")]
     pub format: Format,
@@ -51,6 +55,9 @@ impl CliCommand for CmdIssueList {
             }
             if let Some(team) = self.team {
                 filters.push(IssueFilter::team_key(team));
+            }
+            if let Some(search) = self.search {
+                filters.push(IssueFilter::search(search));
             }
 
             match filters.len() {

@@ -24,6 +24,8 @@ impl CliCommand for CmdIssue {
 #[derive(Clone, Copy, Debug)]
 pub enum IssueTableColumns {
     Key,
+    Title,
+    #[allow(dead_code)]
     Description,
     State,
     Created,
@@ -36,7 +38,7 @@ impl Render for linear_api::schema::issue_list::Issue {
     fn default_list_table_columns() -> Vec<Self::TableColumns> {
         vec![
             IssueTableColumns::Key,
-            IssueTableColumns::Description,
+            IssueTableColumns::Title,
             IssueTableColumns::State,
             IssueTableColumns::Created,
             IssueTableColumns::Updated,
@@ -48,6 +50,7 @@ impl Render for linear_api::schema::issue_list::Issue {
             .iter()
             .map(|c| match c {
                 IssueTableColumns::Key => Cell::new("Key").add_attribute(Attribute::Bold),
+                IssueTableColumns::Title => Cell::new("Title"),
                 IssueTableColumns::Description => Cell::new("Description"),
                 IssueTableColumns::State => Cell::new("State"),
                 IssueTableColumns::Created => Cell::new("Created"),
@@ -63,6 +66,7 @@ impl Render for linear_api::schema::issue_list::Issue {
             .iter()
             .map(|col| match col {
                 IssueTableColumns::Key => Cell::new(&item.identifier),
+                IssueTableColumns::Title => Cell::new(&item.title),
                 IssueTableColumns::Description => {
                     Cell::new(item.description.as_deref().unwrap_or_default())
                 }
